@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("LOCAL_DATABASE_URL")
+}
+
+// ____> Schema
+
+model Student {
+  id      Int    @id @default(autoincrement())
+  groupId Int?
+  name    String
+  email   String @unique
+  group   Group? @relation(fields: [groupId], references: [id])
+  //relation grp
+  //
+}
+
+model Teacher {
+  id      Int     @id @default(autoincrement())
+  groupId Int?
+  name    String
+  email   String  @unique
+  // group   Group  @relation(fields: [groupId], references: [id])
+  //relation grp
+  //
+  Group   Group[]
+}
+
+model Group {
+  id        Int     @id @default(autoincrement())
+  teacherId Int
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  //relation teacher and students
+
+  Student Student[]
+  // Teacher Teacher
+}
